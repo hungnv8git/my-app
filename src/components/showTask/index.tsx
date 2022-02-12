@@ -1,14 +1,16 @@
-import { useAppSelector } from "../../hooks/redux";
-import { TaskDetail } from "./TaskDetail";
+import { useEffect, useState } from 'react'
+import { useAppSelector } from '../../hooks/redux'
+import { TAG, Task } from '../../redux/slices/todoSlice'
+import { TaskDetail } from './TaskDetail'
 
 export function ShowTask() {
-  const { tasks } = useAppSelector((store) => store.todo);
+  const { tasks, currentTag } = useAppSelector((store) => store.todo)
 
   return (
     <>
-      {tasks.map((task) => (
-        <TaskDetail key={task.id} task={task} />
-      ))}
+      {currentTag === TAG.ALL
+        ? tasks.map((task) => <TaskDetail key={task.id} task={task} />)
+        : tasks.filter((task) => task.tag === currentTag).map((task) => <TaskDetail key={task.id} task={task} />)}
     </>
-  );
+  )
 }
